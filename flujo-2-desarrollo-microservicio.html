@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark" data-preset="classic">
+<html lang="es" data-theme="dark" data-preset="signal-flow">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +22,8 @@
             document.documentElement.setAttribute('data-present', 'true');
           }
         } catch (_) {}
-        if (!theme) {
-          try { theme = localStorage.getItem('archify-theme'); } catch (_) {}
-        }
         if (theme !== 'light' && theme !== 'dark') {
-          theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          theme = 'light'; /* default-light */
         }
         document.documentElement.setAttribute('data-theme', theme);
       } catch (_) {}
@@ -5242,7 +5239,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / LÁMINA 04">
-      <svg viewBox="0 0 1052 404" data-layout-contract="readable-v2" role="img" lang="es" aria-labelledby="archify-diagram-title archify-diagram-description" data-animation="trace" data-preset="classic" data-quality-profile="showcase" data-node-ui="">
+      <svg viewBox="0 0 1052 404" data-layout-contract="readable-v2" role="img" lang="es" aria-labelledby="archify-diagram-title archify-diagram-description" data-animation="trace" data-preset="signal-flow" data-quality-profile="showcase" data-node-ui="">
         <title id="archify-diagram-title">Flujo 2 · Desarrollo de Microservicio</title>
         <desc id="archify-diagram-description">Un diagrama de flujo de trabajo generado por Archify.</desc>
         <!-- Definitions -->
@@ -5940,9 +5937,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       function resolveInitial() {
         var fromUrl = urlOverride();
         if (fromUrl) return fromUrl;
-        var saved = readStored();
-        if (saved === 'light' || saved === 'dark') return saved;
-        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        return 'light'; /* default-light */
       }
 
       function apply(theme) {
@@ -5965,8 +5960,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         var media = window.matchMedia('(prefers-color-scheme: light)');
         var onChange = function (e) {
           var saved = readStored();
-          if (urlOverride() || saved === 'light' || saved === 'dark') return;
-          apply(e.matches ? 'light' : 'dark');
+          return; /* default-light: ignora cambios del sistema */
         };
         if (media.addEventListener) media.addEventListener('change', onChange);
         else if (media.addListener) media.addListener(onChange);
@@ -8241,7 +8235,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       createFlows();
       html.setAttribute('data-motion-capable', 'true');
       btn.hidden = false;
-      readerPaused = readStored() !== 'live';
+      readerPaused = false; /* default-live */
       btn.addEventListener('click', function () { setPaused(!readerPaused); });
       if (motionQuery) {
         if (typeof motionQuery.addEventListener === 'function') motionQuery.addEventListener('change', render);
